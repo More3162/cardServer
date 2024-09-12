@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import connectToLocalDb from "./mongodb/connectToMongodbLocally.js";
-import connectToAtlasDb from "./mongodb/connectToAtlas.js";
+const { mongoose } = require('mongoose');
+const connectToLocalDb = require("./mongodb/connectToMongodbLocally");
+const connectToAtlasDb = require("./mongodb/connectToAtlas");
 
 const ENVIRONMENT = "development";
 
@@ -12,4 +12,4 @@ const connectToDb = async () => {
     }
 }
 
-export default connectToDb;
+module.exports = connectToDb;

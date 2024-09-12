@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+const { mongoose } = require('mongoose');
+
 
 const CONNECTION = "";
 
@@ -11,4 +12,4 @@ const connectToAtlasDb = async () => {
     }
 }
 
-export default connectToAtlasDb;
+module.exports = connectToAtlasDb;
