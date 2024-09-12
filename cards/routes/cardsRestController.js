@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { createCard, getCards, getCard, getMyCards, updateCard, deleteCard, likeCard } = require('../models/cardsAccessDataService');
+const auth = require('../../auth/authService');
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/my-cards', async (req, res) => {
+router.get('/my-cards', auth, async (req, res) => {
     try {
         const { user_id } = req.body;
         let cards = await getMyCards(user_id);
@@ -52,7 +53,8 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.patch('/:id', async (req, res) => {
+//like a card by card id
+router.patch('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
         if (Object.keys(req.body).includes('bizNumber')) {
@@ -71,7 +73,7 @@ router.patch('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
         const { user_id } = req.body;

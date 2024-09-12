@@ -13,6 +13,15 @@ app.use(coreFunction);
 // middleware to parse incoming request
 app.use(express.json());
 
+// middleware to log the request - יתן לי הודע בטרמניל על כל בקשה שנשלחה
+app.use((req, res, next) => {
+    console.log(
+        `request URL: ${req.url}| Method: ${req.method} | Time: ${new Date()}`
+    );
+    next();
+})
+
+
 // middleware to route the request - בודק לאיזה נתיב הבקשה מתאימה
 app.use(router);
 
