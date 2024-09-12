@@ -41,10 +41,20 @@ const deleteUser = async (userId) => {
     }
 }
 
+const updateUser = async (userId, newUser) => {
+    try {
+        let user = await User.findByIdAndUpdate(userId, newUser, { new: true });
+        return user;
+    }
+    catch (error) {
+        throw new Error("mongoDB Error: " + error.message);
+    }
+}
 
 module.exports = {
     registerUser,
     getUsers,
     getUser,
     deleteUser,
+    updateUser,
 };

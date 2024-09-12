@@ -25,7 +25,11 @@ app.use((req, res, next) => {
 // middleware to route the request - בודק לאיזה נתיב הבקשה מתאימה
 app.use(router);
 
-
+// middleware to handle errors
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(500).send("internal error of the server");
+});
 
 app.listen(PORT, () => {
     console.log("app is listening to port " + PORT);

@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const { registerUser, getUsers, getUser, deleteUser } = require('../models/usersAccessDataService');
+const { registerUser, getUsers, getUser, deleteUser, updateUser } = require('../models/usersAccessDataService');
+const auth = require('../../auth/authService');
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const users = await getUsers();
         res.send(users);
@@ -21,10 +22,30 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
         const user = await getUser(id);
+        res.send(user);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+})
+
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await deleteUser(id);
+        res.send(user);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+})
+
+router.put('/:id', auth, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await updateUser(id, req.body);
         res.send(user);
     } catch (error) {
         res.status(400).send(error.message);
