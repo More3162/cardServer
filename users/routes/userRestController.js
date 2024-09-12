@@ -3,7 +3,7 @@ const { registerUser, getUsers, getUser, deleteUser, updateUser } = require('../
 const auth = require('../../auth/authService');
 
 const router = Router();
-
+// create a new user
 router.post('/', async (req, res) => {
     try {
         const user = await registerUser(req.body);
@@ -12,8 +12,8 @@ router.post('/', async (req, res) => {
         res.status(400).send(error.message);
     }
 })
-
-router.get('/', auth, async (req, res) => {
+// get all users
+router.get('/', async (req, res) => {
     try {
         const users = await getUsers();
         res.send(users);
@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
         res.status(400).send(error.message);
     }
 })
-
+// get a user by id
 router.get('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
@@ -32,6 +32,7 @@ router.get('/:id', auth, async (req, res) => {
     }
 })
 
+// delete a user by id
 router.delete('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
@@ -42,6 +43,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
 })
 
+// update a user by id
 router.put('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
