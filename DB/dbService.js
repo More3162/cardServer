@@ -1,4 +1,3 @@
-const { mongoose } = require('mongoose');
 const connectToLocalDb = require("./mongodb/connectToMongodbLocally");
 const connectToAtlasDb = require("./mongodb/connectToAtlas");
 
