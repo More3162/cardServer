@@ -73,6 +73,7 @@ router.patch('/:id', auth, async (req, res) => {
     }
 })
 
+//delete a card by id
 router.delete('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;

@@ -41,6 +41,7 @@ const deleteUser = async (userId) => {
     }
 }
 
+// Update a user by id
 const updateUser = async (userId, newUser) => {
     try {
         let user = await User.findByIdAndUpdate(userId, newUser, { new: true });
