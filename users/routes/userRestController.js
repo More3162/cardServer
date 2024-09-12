@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { registerUser, getUsers, getUser, deleteUser, updateUser } = require('../models/usersAccessDataService');
+const { registerUser, getUsers, getUser, deleteUser, updateUser, loginUser } = require('../models/usersAccessDataService');
 const auth = require('../../auth/authService');
 
 const router = Router();
@@ -53,6 +53,18 @@ router.put('/:id', auth, async (req, res) => {
         res.status(400).send(error.message);
     }
 })
+
+// login a user
+router.post("/login", async (req, res) => {
+    try {
+        let { email, password } = req.body;
+        const token = await loginUser(email, password);
+        res.send(token);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
+
 
 module.exports = router;
 

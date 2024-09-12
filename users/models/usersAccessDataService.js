@@ -1,3 +1,4 @@
+const { generateAuthToken } = require('../../auth/providers/jwt');
 const User = require('./Users');
 
 // Create a new user
@@ -52,10 +53,30 @@ const updateUser = async (userId, newUser) => {
     }
 }
 
+// Login a user
+const loginUser = async (email, password) => {
+    try {
+        const userFromDb = await User.findOne({ email });
+        if (!userFromDb) {
+            throw new Error("Authentication Error: Invalid email or password");
+        }
+        if (userFromDb.password !== password) {
+            throw new Error("Authentication Error: Invalid email or password");
+        }
+
+        const token = generateAuthToken(userFromDb);
+        return token;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+
 module.exports = {
     registerUser,
     getUsers,
     getUser,
     deleteUser,
     updateUser,
+    loginUser,
 };
