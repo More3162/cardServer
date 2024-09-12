@@ -7,11 +7,11 @@ const coreFunction = require("./middlewares/cors");
 
 const PORT = 8181;
 
-// middleware to handle CORS
-app.use(coreFunction);
-
 // middleware to parse incoming request
 app.use(express.json());
+
+// middleware to handle CORS
+app.use(coreFunction);
 
 // middleware to log the request - יתן לי הודע בטרמניל על כל בקשה שנשלחה
 app.use((req, res, next) => {
