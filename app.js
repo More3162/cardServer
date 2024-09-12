@@ -1,13 +1,14 @@
 const express = require("express");
-const cors = require("cors");
+
 const connectToDb = require("./DB/dbService");
 const router = require("./router/router");
 const app = express();
+const coreFunction = require("./middlewares/cors");
 
 const PORT = 8181;
 
 // middleware to handle CORS
-app.use(cors());
+app.use(coreFunction);
 
 // middleware to parse incoming request
 app.use(express.json());
