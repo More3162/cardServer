@@ -5,8 +5,13 @@ const auth = require('../../auth/authService');
 const router = Router();
 
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
+        const userInfo = req.user;
+        if (!userInfo.isBusiness) {
+            return res.status(401).send("Only business user can create a card");
+        }
+
         let card = await createCard(req.body);
         res.send(card);
     } catch (error) {

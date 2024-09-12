@@ -25,4 +25,4 @@ const verifyToken = (tokenFromClient) => {
 };
 
 
-module.exports = { generateAuthToken, verifyToken };
+module.exports = { generateAuthToken, verifyToken, SECRET_WORD };
