@@ -1,12 +1,13 @@
 const { generateAuthToken } = require('../../auth/providers/jwt');
 const User = require('./Users');
+const _ = require('lodash');
 
 // Create a new user
 const registerUser = async (newUser) => {
     try {
         let user = new User(newUser);
         user = await user.save();
-        return newUser;
+        return _.pick(user, ['_id', 'name', 'email']);
     } catch (error) {
         throw new Error("mongoDB Error: " + error.message);
     }
