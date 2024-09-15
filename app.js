@@ -7,6 +7,8 @@ const coreFunction = require("./middlewares/cors");
 
 const PORT = 8181;
 
+app.use(express.static("./public"));
+
 // middleware to parse incoming request
 app.use(express.json());
 
