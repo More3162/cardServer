@@ -16,7 +16,7 @@ router.post('/', auth, async (req, res) => {
 
         let card = normalizeCard(req.body, userInfo._id);
         card = await createCard(card);
-        res.send(card);
+        res.status(201).send(card);
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -79,28 +79,27 @@ router.put('/:id', auth, async (req, res) => {
 router.patch('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;
-        if (Object.keys(req.body).includes('bizNumber')) {
-            // Biz Number Patching
-            const { bizNumber } = req.body;
-            let card = await changeBizNumer(id, bizNumber);
-            res.send(card);
-        } else {
-            // Like Patching
-            const { user_id } = req.body;
-            let card = await likeCard(id, user_id);
-            res.send(card);
-        }
+        const userId = req.user._id;
+        // Like Patching
+        let card = await likeCard(id, userId);
+        res.send(card);
     } catch (error) {
         res.status(400).send(error.message);
     }
-})
+});
 
 //delete a card by id
 router.delete('/:id', auth, async (req, res) => {
     try {
+        const userInfo = req.user;
         const { id } = req.params;
-        const { user_id } = req.body;
-        let card = await deleteCard(id, user_id);
+        const fullCardFromDeb = await Card(id);
+
+        if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
+            return res.status(403).send("You can only delete your own card");
+        }
+
+        let card = await deleteCard(id);
         res.send(card);
     } catch (error) {
         res.status(400).send(error.message);

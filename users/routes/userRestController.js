@@ -24,7 +24,12 @@ router.get('/', auth, async (req, res) => {
 // get a user by id
 router.get('/:id', auth, async (req, res) => {
     try {
+        const userInfo = req.user;
         const { id } = req.params;
+        if (userInfo._id !== id && !userInfo.isAdmin) {
+            return res.status(401).send("You can't get other user's data");
+        }
+
         const user = await getUser(id);
         res.send(user);
     } catch (error) {
