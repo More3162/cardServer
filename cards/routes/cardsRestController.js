@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const { createCard, getCards, getCard, getMyCards, updateCard, deleteCard, likeCard } = require('../models/cardsAccessDataService');
 const auth = require('../../auth/authService');
+const { normalizeCard } = require('../helpers/normalizeCard');
+const Card = require('../models/mongodb/Cards');
 
 const router = Router();
 
@@ -12,7 +14,8 @@ router.post('/', auth, async (req, res) => {
             return res.status(401).send("Only business user can create a card");
         }
 
-        let card = await createCard(req.body);
+        let card = normalizeCard(req.body, userInfo._id);
+        card = await createCard(card);
         res.send(card);
     } catch (error) {
         res.status(400).send(error.message);
