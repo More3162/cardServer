@@ -4,7 +4,7 @@ const auth = require('../../auth/authService');
 
 const router = Router();
 
-
+// create a new card
 router.post('/', auth, async (req, res) => {
     try {
         const userInfo = req.user;
@@ -48,6 +48,7 @@ router.get(`/:id`, async (req, res) => {
     }
 })
 
+//update a card by id
 router.put('/:id', auth, async (req, res) => {
     try {
         const { id } = req.params;

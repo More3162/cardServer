@@ -1,4 +1,4 @@
-const Card = require("./Cards");
+const Card = require("./mongodb/Cards");
 
 // Create a new card
 const createCard = async (newCard) => {

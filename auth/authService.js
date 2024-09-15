@@ -5,16 +5,19 @@ const tokenGenerator = "jwt";
 const auth = (req, res, next) => {
     if (tokenGenerator === "jwt") {
         try {
+            // בדיקה אם קיים טוקן בכותרת הבקשה שנשלחה
             const tokenFromClient = req.header("x-auth-token");
-
+            //אם אין טוקן בכותרת הבקשה נזרוק שגיאה
             if (!tokenFromClient) {
                 throw new Error("Authentication Error: Please Login");
             }
-
+            // בדיקת תקינות הטוקן
             const userInfo = verifyToken(tokenFromClient);
             if (!userInfo) {
+                // אם הטוקן לא תקין נזרוק שגיאה
                 throw new Error("Authentication Error: unauthorized user");
             }
+            // אם הטוקן תקין נוסיף את המידע שנמצא בטוקן ל-req
             req.user = userInfo;
             return next();
         } catch (error) {

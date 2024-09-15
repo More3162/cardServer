@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { PHONE, DEFAULT_VALIDATION, EMAIL, URL } = require('../../helpers/mongodb/mongooseValidators');
-const Image = require('../../helpers/mongodb/image');
-const Address = require('../../helpers/mongodb/Address');
+const { PHONE, DEFAULT_VALIDATION, EMAIL, URL } = require('../../../helpers/mongodb/mongooseValidators');
+const Image = require('../../../helpers/mongodb/image');
+const Address = require('../../../helpers/mongodb/Address');
 
 
 const cardSchema = new mongoose.Schema({

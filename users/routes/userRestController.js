@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
     }
 })
 // get all users
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const users = await getUsers();
         res.send(users);
