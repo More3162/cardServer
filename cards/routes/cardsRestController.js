@@ -33,8 +33,11 @@ router.get('/', async (req, res) => {
 
 router.get('/my-cards', auth, async (req, res) => {
     try {
-        const { user_id } = req.body;
-        let cards = await getMyCards(user_id);
+        const userInfo = req.user;
+        if (!userInfo.isBusiness) {
+            return res.status(402).send("Only business user can get their cards");
+        }
+        let cards = await getMyCards(userInfo._id);
         res.send(cards);
     } catch (error) {
         res.status(400).send(error.message);
@@ -54,8 +57,18 @@ router.get(`/:id`, async (req, res) => {
 //update a card by id
 router.put('/:id', auth, async (req, res) => {
     try {
+        const userInfo = req.user;
         const { id } = req.params;
-        let card = await updateCard(id, req.body);
+        const newCard = req.body;
+
+        const fullCardFromDeb = await Card(id);
+
+        if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
+            return res.status(403).send("You can only update your own card");
+        }
+
+        let card = await normalizeCard(id, newCard);
+        card = await updateCard(id, card);
         res.send(card);
     } catch (error) {
         res.status(400).send(error.message);
