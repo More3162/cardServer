@@ -3,6 +3,7 @@ const { createCard, getCards, getCard, getMyCards, updateCard, deleteCard, likeC
 const auth = require('../../auth/authService');
 const { normalizeCard } = require('../helpers/normalizeCard');
 const Card = require('../models/mongodb/Cards');
+const { handleError } = require('../../utils/handleErrors');
 
 const router = Router();
 
@@ -18,7 +19,7 @@ router.post('/', auth, async (req, res) => {
         card = await createCard(card);
         res.status(201).send(card);
     } catch (error) {
-        res.status(400).send(error.message);
+        handleError(res, 400, error.message);
     }
 })
 
