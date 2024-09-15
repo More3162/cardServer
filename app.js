@@ -7,6 +7,7 @@ const coreFunction = require("./middlewares/cors");
 
 const PORT = 8181;
 
+// middleware to serve static files
 app.use(express.static("./public"));
 
 // middleware to parse incoming request
