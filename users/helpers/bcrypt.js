@@ -4,8 +4,9 @@ const bcrypt = require("bcryptjs")
 const generateUserPassword = (password) => bcrypt.hashSync(password, 10);
 
 //פונקציה שמבצעת השוואה בין הסיסמאות ומפענת
-const comprePassword = (password, cryptPassword) => {
-    bcrypt.compare(password, cryptPassword);
+const comaprePasswords = (password, cryptPassword) => {
+    return bcrypt.compareSync(password, cryptPassword);
 };
 
-module.exports = { generateUserPassword, comprePassword }
+module.exports = { generateUserPassword, comaprePasswords }
+

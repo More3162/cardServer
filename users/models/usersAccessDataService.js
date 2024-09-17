@@ -2,10 +2,12 @@ const { generateAuthToken } = require('../../auth/providers/jwt');
 const User = require('./Users');
 const _ = require('lodash');
 const { createError } = require('../../utils/handleErrors');
+const { generateUserPassword, comaprePasswords } = require('../helpers/bcrypt');
 
 // Create a new user
 const registerUser = async (newUser) => {
     try {
+        newUser.password = generateUserPassword(newUser.password) // יעשה עיבוד סיסמא משתש - - הצפנה
         let user = new User(newUser);
         user = await user.save();
 
@@ -60,7 +62,7 @@ const updateUser = async (userId, newUser) => {
 const loginUser = async (email, password) => {
     try {
         const userFromDb = await User.findOne({ email });
-        if (!userFromDb) {
+        if (!comaprePasswords(password, userFromDb.password)) {
             const error = new Error("Authentication Error: Invalid email or password");
             error.status = 401;
             return createError("Authentication", error);
