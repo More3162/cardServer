@@ -4,6 +4,7 @@ const router = require("./router/router");
 const app = express();
 const coreFunction = require("./middlewares/cors");
 const { handleError } = require("./utils/handleErrors");
+const chalk = require("chalk");
 
 const PORT = 8181;
 
@@ -35,6 +36,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-    console.log("app is listening to port " + PORT);
+    console.log(chalk.blue("app is listening to port " + PORT));
     connectToDb();
 });
