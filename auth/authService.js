@@ -1,4 +1,4 @@
-const { createError } = require("../utils/handleErrors");
+const { createError, handleError } = require("../utils/handleErrors");
 
 const SECRET_WORD = require("../auth/providers/jwt").SECRET_WORD;
 const tokenGenerator = "jwt";
@@ -27,10 +27,10 @@ const auth = (req, res, next) => {
             req.user = userInfo;
             return next();
         } catch (error) {
-            return res.status(401).send(error.message);
+            return handleError(res, 401, error.message);
         }
     }
-    return res.status(500).send("you did not use valid token generator");
+    return handleError(res, 500, "you did not use valid token generator")
 }
 
 module.exports = auth;

@@ -12,14 +12,14 @@ router.post('/', auth, async (req, res) => {
     try {
         const userInfo = req.user;
         if (!userInfo.isBusiness) {
-            return res.status(401).send("Only business user can create a card");
+            return handleError(res, 403, "Only business user can create a card")
         }
 
         let card = normalizeCard(req.body, userInfo._id);
         card = await createCard(card);
-        res.status(201).send(card);
+        return handleError(res, 201, error.message)
     } catch (error) {
-        handleError(res, 400, error.message);
+        handleError(res, error.status || 400, error.message);
     }
 })
 
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
         let cards = await getCards();
         res.send(cards);
     } catch (error) {
-        res.status(400).send(error.message);
+        handleError(res, error.status || 400, error.message);
     }
 })
 
@@ -36,12 +36,12 @@ router.get('/my-cards', auth, async (req, res) => {
     try {
         const userInfo = req.user;
         if (!userInfo.isBusiness) {
-            return res.status(402).send("Only business user can get their cards");
+            return handleError(res, error.status || 403, "Only business user can get their cards");
         }
         let cards = await getMyCards(userInfo._id);
         res.send(cards);
     } catch (error) {
-        res.status(400).send(error.message);
+        handleError(res, error.status || 403, error.message);
     }
 })
 
@@ -51,7 +51,7 @@ router.get(`/:id`, async (req, res) => {
         let card = await getCard(id);
         res.send(card);
     } catch (error) {
-        res.status(400).send(error.message);
+        handleError(res, error.status || 400, error.message);
     }
 })
 
@@ -65,14 +65,14 @@ router.put('/:id', auth, async (req, res) => {
         const fullCardFromDeb = await Card(id);
 
         if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
-            return res.status(403).send("You can only update your own card");
+            return handleError(res, error.status || 403, "You can only update your own card")
         }
 
         let card = await normalizeCard(id, newCard);
         card = await updateCard(id, card);
         res.send(card);
     } catch (error) {
-        res.status(400).send(error.message);
+        handleError(res, error.status || 403, error.message);
     }
 })
 
@@ -85,9 +85,10 @@ router.patch('/:id', auth, async (req, res) => {
         let card = await likeCard(id, userId);
         res.send(card);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, error.status || 403, error.message)
     }
-});
+}
+);
 
 //delete a card by id
 router.delete('/:id', auth, async (req, res) => {
@@ -97,13 +98,13 @@ router.delete('/:id', auth, async (req, res) => {
         const fullCardFromDeb = await Card(id);
 
         if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
-            return res.status(403).send("You can only delete your own card");
+            return handleError(res, 403, "You can only delete your own card")
         }
 
         let card = await deleteCard(id);
         res.send(card);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, error.status || 400, error.message)
     }
 })
 

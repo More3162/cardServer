@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { registerUser, getUsers, getUser, deleteUser, updateUser, loginUser } = require('../models/usersAccessDataService');
 const auth = require('../../auth/authService');
+const { handleError } = require('../../utils/handleErrors');
 
 const router = Router();
 // create a new user
@@ -9,7 +10,7 @@ router.post('/', async (req, res) => {
         const user = await registerUser(req.body);
         res.send(user);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, 400, error.message)
     }
 })
 // get all users
@@ -18,7 +19,7 @@ router.get('/', auth, async (req, res) => {
         const users = await getUsers();
         res.send(users);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, 400, error.message)
     }
 })
 // get a user by id
@@ -27,13 +28,13 @@ router.get('/:id', auth, async (req, res) => {
         const userInfo = req.user;
         const { id } = req.params;
         if (userInfo._id !== id && !userInfo.isAdmin) {
-            return res.status(401).send("You can't get other user's data");
+            return handleError(res, 401, "You can't get other user's data")
         }
 
         const user = await getUser(id);
         res.send(user);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, 400, error.message)
     }
 })
 
@@ -44,9 +45,10 @@ router.delete('/:id', auth, async (req, res) => {
         const user = await deleteUser(id);
         res.send(user);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, 400, error.message)
     }
-})
+}
+)
 
 // update a user by id
 router.put('/:id', auth, async (req, res) => {
@@ -55,7 +57,7 @@ router.put('/:id', auth, async (req, res) => {
         const user = await updateUser(id, req.body);
         res.send(user);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, 400, error.message)
     }
 })
 
@@ -66,7 +68,7 @@ router.post("/login", async (req, res) => {
         const token = await loginUser(email, password);
         res.send(token);
     } catch (error) {
-        res.status(400).send(error.message);
+        return handleError(res, 400, error.message)
     }
 });
 
