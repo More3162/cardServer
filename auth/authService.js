@@ -1,3 +1,5 @@
+const { createError } = require("../utils/handleErrors");
+
 const SECRET_WORD = require("../auth/providers/jwt").SECRET_WORD;
 const tokenGenerator = "jwt";
 
@@ -9,13 +11,17 @@ const auth = (req, res, next) => {
             const tokenFromClient = req.header("x-auth-token");
             //אם אין טוקן בכותרת הבקשה נזרוק שגיאה
             if (!tokenFromClient) {
-                throw new Error("Authentication Error: Please Login");
+                const error = new Error("Please Login");
+                error.status = 401;
+                return createError("Authentication", error);
             }
             // בדיקת תקינות הטוקן
             const userInfo = verifyToken(tokenFromClient);
             if (!userInfo) {
                 // אם הטוקן לא תקין נזרוק שגיאה
-                throw new Error("Authentication Error: unauthorized user");
+                const error = new Error("Unauthorized user");
+                error.status = 401;
+                return createError("Authentication", error);
             }
             // אם הטוקן תקין נוסיף את המידע שנמצא בטוקן ל-req
             req.user = userInfo;

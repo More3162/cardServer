@@ -73,24 +73,25 @@ const deleteCard = async (cardId) => {
 const likeCard = async (cardId, userId) => {
     try {
         let card = await Card.findById(cardId); // משכתי את הכרטיס מהמאגר
-        if (card) {
-            if (card && card.likes.includes(userId)) { // מביא את המערך של הכרטיס עם כל היוזר איידי שאהב את הכרטיס
-                let newLikesAeeay = card.likes.filter((id) => id != userId); // מסנן את כל הלייקים של הכרטיסים ומוחק את היוזר שלחץ לייק
-                card.likes = newLikesAeeay; // מעדכן את המערך של הלייקים בכרטיס
-            } else {
-                card.likes.push(userId); // מוסיף למערך של הלייקים את היוזר שלחץ לייק
-            }
-            await card.save(); // שומר את הכרטיס במאגר
-            return card; // מחזיר את הכרטיס
+        if (!card) {
+            const error = new Error(
+                "A card with this ID cannot be found in the database"
+            );
+            error.status = 404;
+            return createError("Mongoose", error);
         }
-        throw new Error("card not found"); // אם הכרטיס לא נמצא
-
+        if (card && card.likes.includes(userId)) { // מביא את המערך של הכרטיס עם כל היוזר איידי שאהב את הכרטיס
+            let newLikesAeeay = card.likes.filter((id) => id != userId); // מסנן את כל הלייקים של הכרטיסים ומוחק את היוזר שלחץ לייק
+            card.likes = newLikesAeeay; // מעדכן את המערך של הלייקים בכרטיס
+        } else {
+            card.likes.push(userId); // מוסיף למערך של הלייקים את היוזר שלחץ לייק
+        }
+        await card.save(); // שומר את הכרטיס במאגר
+        return card; // מחזיר את הכרטיס
     } catch (error) {
         return createError("Mongoose", error);
     }
 }
-
-
 
 
 module.exports = {
