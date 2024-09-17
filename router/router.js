@@ -16,6 +16,7 @@ router.use("/users", usersRouterController);
 
 // middleware to route the request - אם זו לא בקשת משתמש או כרטיס את זה יתן הודעת שגיאה
 router.use((req, res) => {
+    const error = new Error("path not Found")
     return handleError(res, 404, error.message)
 
 });

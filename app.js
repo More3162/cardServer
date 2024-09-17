@@ -19,9 +19,9 @@ app.use(coreFunction);
 
 // middleware to log the request - יתן לי הודעה בטרמניל על כל בקשה שנשלחה
 app.use((req, res, next) => {
-    console.log(
+    console.log(chalk.bgBlueBright(
         `request URL: ${req.url}| Method: ${req.method} | Time: ${new Date()}`
-    );
+    ));
     next();
 })
 
