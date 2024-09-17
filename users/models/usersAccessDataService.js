@@ -1,15 +1,17 @@
 const { generateAuthToken } = require('../../auth/providers/jwt');
 const User = require('./Users');
 const _ = require('lodash');
+const { createError } = require('../../utils/handleErrors');
 
 // Create a new user
 const registerUser = async (newUser) => {
     try {
         let user = new User(newUser);
         user = await user.save();
+
         return _.pick(user, ['_id', 'name', 'email']);
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 };
 
@@ -19,7 +21,7 @@ const getUsers = async () => {
         let users = await User.find();
         return users;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 };
 
@@ -29,7 +31,7 @@ const getUser = async (id) => {
         let user = await User.findById(id);
         return user;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 };
 
@@ -39,7 +41,7 @@ const deleteUser = async (userId) => {
         let user = await User.findByIdAndDelete(userId);
         return user;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 }
 
@@ -50,7 +52,7 @@ const updateUser = async (userId, newUser) => {
         return user;
     }
     catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 }
 
@@ -59,16 +61,20 @@ const loginUser = async (email, password) => {
     try {
         const userFromDb = await User.findOne({ email });
         if (!userFromDb) {
-            throw new Error("Authentication Error: Invalid email or password");
+            const error = new Error("Authentication Error: Invalid email or password");
+            error.status = 401;
+            return createError("Authentication", error);
         }
         if (userFromDb.password !== password) {
-            throw new Error("Authentication Error: Invalid email or password");
+            const error = new Error("Authentication Error: Invalid email or password");
+            error.status = 401;
+            return createError("Authentication", error);
         }
 
         const token = generateAuthToken(userFromDb);
         return token;
     } catch (error) {
-        throw new Error(error);
+        return createError("Mongoose", error);
     }
 };
 

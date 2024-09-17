@@ -1,15 +1,23 @@
+const DB = "mongodb"; // סוג מסד נתונים
+const { createError } = require("../../utils/handleErrors");
 const Card = require("./mongodb/Cards");
+
 
 // Create a new card
 const createCard = async (newCard) => {
-    try {
-        let card = new Card(newCard);
-        card = await card.save();
-        return newCard;
-    } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+    if (DB === "mongodb") {
+        try {
+            let card = new Card(newCard);
+            card = await card.save();
+            return newCard;
+        } catch (error) {
+            return createError("Mongoose", error);
+        }
     }
-};
+    const error = new Error("ther is not other db for this request");
+    error.status = 500;
+    return createError("DB", error);
+}
 
 // Get all cards
 const getCards = async () => {
@@ -17,7 +25,7 @@ const getCards = async () => {
         let cards = await Card.find();
         return cards;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 };
 
@@ -27,7 +35,7 @@ const getCard = async (id) => {
         let card = await Card.findById(id);
         return card;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 };
 
@@ -37,7 +45,7 @@ const getMyCards = async (user_id) => {
         let cards = await Card.find({ user_id: user_id });
         return cards;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 };
 
@@ -47,7 +55,7 @@ const updateCard = async (cardId, newCard) => {
         let card = await Card.findByIdAndUpdate(cardId, newCard, { new: true });
         return card;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 }
 
@@ -57,7 +65,7 @@ const deleteCard = async (cardId) => {
         let card = await Card.findByIdAndDelete(cardId);
         return card;
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 }
 
@@ -78,7 +86,7 @@ const likeCard = async (cardId, userId) => {
         throw new Error("card not found"); // אם הכרטיס לא נמצא
 
     } catch (error) {
-        throw new Error("mongoDB Error: " + error.message);
+        return createError("Mongoose", error);
     }
 }
 
