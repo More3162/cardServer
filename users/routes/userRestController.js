@@ -13,7 +13,10 @@ router.post('/', async (req, res) => {
         return handleError(res, 400, error.message)
     }
 })
+
+
 // get all users
+
 router.get('/', auth, async (req, res) => {
     try {
         const users = await getUsers();
@@ -22,6 +25,8 @@ router.get('/', auth, async (req, res) => {
         return handleError(res, 400, error.message)
     }
 })
+
+
 // get a user by id
 router.get('/:id', auth, async (req, res) => {
     try {
