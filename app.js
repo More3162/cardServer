@@ -5,6 +5,7 @@ const app = express();
 const coreFunction = require("./middlewares/cors");
 const { handleError } = require("./utils/handleErrors");
 const chalk = require("chalk");
+const morgan = require("morgan")
 
 const PORT = 8181;
 
@@ -17,13 +18,8 @@ app.use(express.json());
 // middleware to handle CORS
 app.use(coreFunction);
 
-// middleware to log the request - יתן לי הודעה בטרמניל על כל בקשה שנשלחה
-app.use((req, res, next) => {
-    console.log(chalk.bgBlueBright(
-        `request URL: ${req.url}| Method: ${req.method} | Time: ${new Date()}`
-    ));
-    next();
-})
+//יתן הודעה בטרמינל על כל בקשה שנשלחת עם הסטטוס זמן וסוג הבקשה
+app.use(morgan("tiny"))
 
 
 // middleware to route the request - בודק לאיזה נתיב הבקשה מתאימה
@@ -39,3 +35,14 @@ app.listen(PORT, () => {
     console.log(chalk.blue("app is listening to port " + PORT));
     connectToDb();
 });
+
+
+
+
+// middleware to log the request - יתן לי הודעה בטרמניל על כל בקשה שנשלחה
+/* app.use((req, res, next) => {
+    console.log(chalk.bgBlueBright(
+        `request URL: ${req.url}| Method: ${req.method} | Time: ${new Date()}`
+    ));
+    next();
+}) */
