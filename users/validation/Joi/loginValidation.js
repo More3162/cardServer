@@ -15,7 +15,7 @@ const loginValidation = (user) => {
             )
             .rule({
                 message:
-                    'user "password" must be at least nine characters long and contain an uppercase letter, a lowercase letter, a number and one of the following characters !@#$%^&*-',
+                    'user "password" must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number and one of the following characters !@#$%^&*-',
             })
             .required(),
     });

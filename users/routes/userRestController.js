@@ -7,6 +7,9 @@ const router = Router();
 // create a new user
 router.post('/', async (req, res) => {
     try {
+        const error = validateRegistration(req.body);
+        if (error) return handleError(res, 400, `Joi Error: ${error}`);
+
         const user = await registerUser(req.body);
         res.send(user);
     } catch (error) {
@@ -69,6 +72,9 @@ router.put('/:id', auth, async (req, res) => {
 // login a user
 router.post("/login", async (req, res) => {
     try {
+        const error = validateLogin(req.body);
+        if (error) return handleError(res, 400, `Joi Error: ${error}`);
+
         let { email, password } = req.body;
         const token = await loginUser(email, password);
         res.send(token);
