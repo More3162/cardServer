@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const morganLogger = require("./loggers/morganLogger");
 
 const logger = "morgan";
