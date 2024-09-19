@@ -1,6 +1,7 @@
 const { createError, handleError } = require("../utils/handleErrors");
 
 const SECRET_WORD = require("../auth/providers/jwt").SECRET_WORD;
+const verifyToken = require("../auth/providers/jwt");
 const tokenGenerator = "jwt";
 
 
