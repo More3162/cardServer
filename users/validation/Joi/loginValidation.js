@@ -19,6 +19,7 @@ const loginValidation = (user) => {
             })
             .required(),
     });
+
     return schema.validate(user);
 };
 
