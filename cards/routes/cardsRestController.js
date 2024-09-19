@@ -4,6 +4,7 @@ const auth = require('../../auth/authService');
 const { normalizeCard } = require('../helpers/normalizeCard');
 const Card = require('../models/mongodb/Cards');
 const { handleError } = require('../../utils/handleErrors');
+const validateCard = require('../validation/cardValidationService');
 
 const router = Router();
 
@@ -13,6 +14,10 @@ router.post('/', auth, async (req, res) => {
         const userInfo = req.user;
         if (!userInfo.isBusiness) {
             return handleError(res, 403, "Only business user can create a card")
+        }
+        const errorMessage = validateCard(req.body)
+        if (errorMessage !== "") {
+            return handleError(res, 400, "validation Error: " + errorMessage)
         }
 
         let card = normalizeCard(req.body, userInfo._id);
@@ -66,6 +71,11 @@ router.put('/:id', auth, async (req, res) => {
 
         if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
             return handleError(res, error.status || 403, "You can only update your own card")
+        }
+
+        const errorMessage = validateCard(req.body)
+        if (errorMessage !== "") {
+            return handleError(res, 400, "validation Error: " + errorMessage)
         }
 
         let card = await normalizeCard(id, newCard);
