@@ -1,11 +1,11 @@
-const morgan = require("morgan")
+const morganLogger = require("./loggers/morganLogger");
 
-const logger = morgan;
+const logger = "morgan";
 
-const middleware = (logger) => {
-    if (!logger == morgan) {
-        return morgan("tiny")
+const loggerMiddleware = () => {
+    if (logger === "morgan") {
+        return morganLogger;
     }
-}
+};
 
-module.exports = middleware;
+module.exports = loggerMiddleware;

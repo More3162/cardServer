@@ -5,9 +5,13 @@ const app = express();
 const coreFunction = require("./middlewares/cors");
 const { handleError } = require("./utils/handleErrors");
 const chalk = require("chalk");
-const morgan = require("morgan")
+const morgan = require("morgan");
+const loggerMiddleware = require("./logger/loggerService");
 
 const PORT = 8181;
+
+// middleware to log the request	- יתן לי הודעה בטרמניל על כל בקשה שנשלחה	
+app.use(loggerMiddleware());
 
 // middleware to serve static files
 app.use(express.static("./public"));
@@ -17,9 +21,6 @@ app.use(express.json());
 
 // middleware to handle CORS
 app.use(coreFunction);
-
-//יתן הודעה בטרמינל על כל בקשה שנשלחת עם הסטטוס זמן וסוג הבקשה
-app.use(morgan("tiny"))
 
 
 // middleware to route the request - בודק לאיזה נתיב הבקשה מתאימה
@@ -37,6 +38,9 @@ app.listen(PORT, () => {
 });
 
 
+
+//יתן הודעה בטרמינל על כל בקשה שנשלחת עם הסטטוס זמן וסוג הבקשה
+/* app.use(morgan("tiny")) */
 
 
 // middleware to log the request - יתן לי הודעה בטרמניל על כל בקשה שנשלחה
