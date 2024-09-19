@@ -1,8 +1,8 @@
 const config = require("config");
 const DB = config.get("DB");
+
 const { createError } = require("../../utils/handleErrors");
 const Card = require("./mongodb/Cards");
-
 
 // Create a new card
 const createCard = async (newCard) => {
