@@ -1,4 +1,5 @@
-const DB = "mongodb"; // סוג מסד נתונים
+const config = require("config");
+const DB = config.get("DB");
 const { createError } = require("../../utils/handleErrors");
 const Card = require("./mongodb/Cards");
 

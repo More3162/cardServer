@@ -1,7 +1,9 @@
 const chalk = require("chalk");
 const morganLogger = require("./loggers/morganLogger");
 
-const logger = "morgan";
+
+const config = require("config");
+const logger = config.get("LOGGER");
 
 const loggerMiddleware = () => {
     if (logger === "morgan") {

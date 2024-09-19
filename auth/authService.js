@@ -1,8 +1,12 @@
 const { createError, handleError } = require("../utils/handleErrors");
 
-const SECRET_WORD = require("../auth/providers/jwt").SECRET_WORD;
+//const SECRET_WORD = require("../auth/providers/jwt").SECRET_WORD;
+
 const verifyToken = require("../auth/providers/jwt");
-const tokenGenerator = "jwt";
+
+// קריאה לקובץ הקונפיגורציה
+const config = require("config");
+const tokenGenerator = config.get("TOKEN_GENERATOR");
 
 
 const auth = (req, res, next) => {
