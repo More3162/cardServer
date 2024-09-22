@@ -7,6 +7,7 @@ const { handleError } = require("./utils/handleErrors");
 const chalk = require("chalk");
 const morgan = require("morgan");
 const loggerMiddleware = require("./logger/loggerService");
+require("dotenv").config();
 
 const PORT = 8181;
 
@@ -24,8 +25,10 @@ app.use(coreFunction);
 
 // זה יתן לי אינדיקציה על איזה משתנה סביבה אני רץ
 app.get("/", (req, res) => {
-    const myPassword = "123456"
-    res.send(process.env.NODE_ENV);
+    //זה ימשוך את הנתונים מתוך קובץ הסביבה .env
+    const myPassword = process.env.PASSWORD2;
+    res.send(myPassword);
+    //res.send(process.env.NODE_ENV + " " + myPassword);
 })
 
 
