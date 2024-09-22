@@ -22,6 +22,12 @@ app.use(express.json());
 // middleware to handle CORS
 app.use(coreFunction);
 
+// זה יתן לי אינדיקציה על איזה משתנה סביבה אני רץ
+app.get("/", (req, res) => {
+    const myPassword = "123456"
+    res.send(process.env.NODE_ENV);
+})
+
 
 // middleware to route the request - בודק לאיזה נתיב הבקשה מתאימה
 app.use(router);
@@ -31,6 +37,7 @@ app.use((err, req, res, next) => {
     const message = err.message || "internal server error";
     return handleError(res, 500, message); // כל שגיאה שתקרה תקבל תשובה של שגיאה פנימית
 });
+
 
 app.listen(PORT, () => {
     console.log(chalk.blue("app is listening to port " + PORT));
