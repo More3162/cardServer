@@ -70,7 +70,7 @@ router.put('/:id', auth, async (req, res) => {
 
         const fullCardFromDeb = await Card(id);
 
-        if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
+        if (userInfo._id !== fullCardFromDeb.user_id.toString() && !userInfo.isAdmin) {
             return handleError(res, error.status || 403, "You can only update your own card")
         }
 
@@ -108,7 +108,7 @@ router.delete('/:id', auth, async (req, res) => {
         const { id } = req.params;
         const fullCardFromDeb = await Card(id);
 
-        if (userInfo._id !== fullCardFromDeb.user_id && !userInfo.isAdmin) {
+        if (userInfo._id !== fullCardFromDeb.user_id.toString() && !userInfo.isAdmin) {
             return handleError(res, 403, "You can only delete your own card")
         }
 
