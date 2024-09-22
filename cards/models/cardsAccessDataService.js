@@ -15,7 +15,7 @@ const createCard = async (newCard) => {
             return createError("Mongoose", error);
         }
     }
-    const error = new Error("ther is not other db for this request");
+    const error = new Error("there is not other db for this request");
     error.status = 500;
     return createError("DB", error);
 }

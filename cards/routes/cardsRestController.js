@@ -20,9 +20,10 @@ router.post('/', auth, async (req, res) => {
             return handleError(res, 400, "validation Error: " + errorMessage)
         }
 
-        let card = normalizeCard(req.body, userInfo._id);
+        let card = await normalizeCard(req.body, userInfo._id);
+        console.log(card)
         card = await createCard(card);
-        return handleError(res, 201, error.message)
+        return res.status(201).send(card);
     } catch (error) {
         handleError(res, error.status || 400, error.message);
     }

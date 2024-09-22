@@ -67,12 +67,6 @@ const loginUser = async (email, password) => {
             error.status = 401;
             return createError("Authentication", error);
         }
-        if (userFromDb.password !== password) {
-            const error = new Error("Authentication Error: Invalid email or password");
-            error.status = 401;
-            return createError("Authentication", error);
-        }
-
         const token = generateAuthToken(userFromDb);
         return token;
     } catch (error) {

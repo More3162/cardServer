@@ -1,8 +1,8 @@
-const { card } = require('../models/mongodb/Cards');
+const Card = require('../models/mongodb/Cards');
 const _ = require('lodash');
 
 const generateBizNumber = async () => {
-    let cardsCount = await card.countDocuments();
+    let cardsCount = await Card.countDocuments();
     if (cardsCount === 9_000_000) {
         const error = new Error("The maximum number of cards has been reached");
         error.status = 409;
@@ -10,7 +10,7 @@ const generateBizNumber = async () => {
     }
     let random;
     do {
-        random = _.random(1_000_000, 9_999_9999);
+        random = _.random(1_000_000, 9_999_999);
     } while (await isBizNumberExists(random));
     return random;
 };
@@ -18,7 +18,7 @@ const generateBizNumber = async () => {
 
 const isBizNumberExists = async (bizNumber) => {
     try {
-        const cardWithThisBizNumber = await card.findOne({ bizNumber });
+        const cardWithThisBizNumber = await Card.findOne({ bizNumber });
         return Boolean(cardWithThisBizNumber);
     } catch (error) {
         error.status = 500;
