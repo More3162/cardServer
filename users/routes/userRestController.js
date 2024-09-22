@@ -2,6 +2,8 @@ const { Router } = require('express');
 const { registerUser, getUsers, getUser, deleteUser, updateUser, loginUser } = require('../models/usersAccessDataService');
 const auth = require('../../auth/authService');
 const { handleError } = require('../../utils/handleErrors');
+const { validateRegistration, validateLogin } = require("../validation/userValidationService")
+
 
 const router = Router();
 // create a new user
