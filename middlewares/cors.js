@@ -5,8 +5,7 @@ const cors = require("cors");
 const coreFunction = cors({
     origin: ["http://127.0.0.1:5500",
         "http://localhost:5173",
-        "http://localhost:5173/fav-cards",
-        "http://localhost:5173/my-cards",
+        "http://localhost:8181",
 
     ], // the origin of the request
 })
