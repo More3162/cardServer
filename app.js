@@ -4,12 +4,12 @@ require("dotenv").config();
 const morgan = require("morgan");
 const chalk = require("chalk");
 const router = require("./router/router");
-const app = express();
 const coreFunction = require("./middlewares/cors");
 const { handleError } = require("./utils/handleErrors");
 const loggerMiddleware = require("./logger/loggerService");
 
-const PORT = 8181;
+const app = express();
+const PORT = process.env.PORT || 8181;
 
 // middleware to log the request	- יתן לי הודעה בטרמניל על כל בקשה שנשלחה	
 app.use(loggerMiddleware());
